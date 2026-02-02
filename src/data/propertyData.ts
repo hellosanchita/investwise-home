@@ -1,5 +1,6 @@
 export interface CityData {
   name: string;
+  state: string;
   medianHomePrice: number;
   annualAppreciation: number;
   rentalYield: number;
@@ -21,83 +22,136 @@ export const statesData: StateData[] = [
     name: "California",
     abbreviation: "CA",
     cities: [
-      { name: "Los Angeles", medianHomePrice: 950000, annualAppreciation: 4.5, rentalYield: 4.2, propertyTaxRate: 0.76, insuranceRate: 0.35, vacancyRate: 5, maintenanceRate: 1, managementFee: 8 },
-      { name: "San Francisco", medianHomePrice: 1400000, annualAppreciation: 3.8, rentalYield: 3.5, propertyTaxRate: 0.68, insuranceRate: 0.4, vacancyRate: 4, maintenanceRate: 1.2, managementFee: 10 },
-      { name: "San Diego", medianHomePrice: 850000, annualAppreciation: 5.0, rentalYield: 4.5, propertyTaxRate: 0.73, insuranceRate: 0.32, vacancyRate: 4.5, maintenanceRate: 0.9, managementFee: 8 },
-      { name: "Sacramento", medianHomePrice: 485000, annualAppreciation: 5.5, rentalYield: 5.2, propertyTaxRate: 0.75, insuranceRate: 0.28, vacancyRate: 5, maintenanceRate: 0.8, managementFee: 7 },
+      { name: "Los Angeles", state: "CA", medianHomePrice: 950000, annualAppreciation: 4.5, rentalYield: 4.2, propertyTaxRate: 0.76, insuranceRate: 0.35, vacancyRate: 5, maintenanceRate: 1, managementFee: 8 },
+      { name: "San Francisco", state: "CA", medianHomePrice: 1400000, annualAppreciation: 3.8, rentalYield: 3.5, propertyTaxRate: 0.68, insuranceRate: 0.4, vacancyRate: 4, maintenanceRate: 1.2, managementFee: 10 },
+      { name: "San Diego", state: "CA", medianHomePrice: 850000, annualAppreciation: 5.0, rentalYield: 4.5, propertyTaxRate: 0.73, insuranceRate: 0.32, vacancyRate: 4.5, maintenanceRate: 0.9, managementFee: 8 },
+      { name: "Sacramento", state: "CA", medianHomePrice: 485000, annualAppreciation: 5.5, rentalYield: 5.2, propertyTaxRate: 0.75, insuranceRate: 0.28, vacancyRate: 5, maintenanceRate: 0.8, managementFee: 7 },
+      { name: "San Jose", state: "CA", medianHomePrice: 1350000, annualAppreciation: 4.2, rentalYield: 3.8, propertyTaxRate: 0.7, insuranceRate: 0.38, vacancyRate: 4, maintenanceRate: 1.1, managementFee: 9 },
+      { name: "Fresno", state: "CA", medianHomePrice: 385000, annualAppreciation: 5.8, rentalYield: 6.0, propertyTaxRate: 0.78, insuranceRate: 0.26, vacancyRate: 5.5, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "Oakland", state: "CA", medianHomePrice: 780000, annualAppreciation: 4.0, rentalYield: 4.8, propertyTaxRate: 0.72, insuranceRate: 0.36, vacancyRate: 5, maintenanceRate: 1.0, managementFee: 8 },
+      { name: "Long Beach", state: "CA", medianHomePrice: 750000, annualAppreciation: 4.3, rentalYield: 4.6, propertyTaxRate: 0.74, insuranceRate: 0.33, vacancyRate: 5, maintenanceRate: 0.95, managementFee: 8 },
+      { name: "Bakersfield", state: "CA", medianHomePrice: 340000, annualAppreciation: 5.5, rentalYield: 6.2, propertyTaxRate: 0.8, insuranceRate: 0.24, vacancyRate: 6, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Irvine", state: "CA", medianHomePrice: 1150000, annualAppreciation: 4.8, rentalYield: 4.0, propertyTaxRate: 0.69, insuranceRate: 0.3, vacancyRate: 3.5, maintenanceRate: 0.85, managementFee: 9 },
     ]
   },
   {
     name: "Texas",
     abbreviation: "TX",
     cities: [
-      { name: "Austin", medianHomePrice: 565000, annualAppreciation: 6.0, rentalYield: 5.5, propertyTaxRate: 1.8, insuranceRate: 0.5, vacancyRate: 6, maintenanceRate: 0.8, managementFee: 8 },
-      { name: "Houston", medianHomePrice: 340000, annualAppreciation: 4.5, rentalYield: 6.5, propertyTaxRate: 2.0, insuranceRate: 0.8, vacancyRate: 7, maintenanceRate: 0.9, managementFee: 7 },
-      { name: "Dallas", medianHomePrice: 420000, annualAppreciation: 5.0, rentalYield: 6.0, propertyTaxRate: 1.9, insuranceRate: 0.55, vacancyRate: 6, maintenanceRate: 0.85, managementFee: 8 },
-      { name: "San Antonio", medianHomePrice: 290000, annualAppreciation: 4.8, rentalYield: 6.8, propertyTaxRate: 1.85, insuranceRate: 0.45, vacancyRate: 6.5, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "Austin", state: "TX", medianHomePrice: 565000, annualAppreciation: 6.0, rentalYield: 5.5, propertyTaxRate: 1.8, insuranceRate: 0.5, vacancyRate: 6, maintenanceRate: 0.8, managementFee: 8 },
+      { name: "Houston", state: "TX", medianHomePrice: 340000, annualAppreciation: 4.5, rentalYield: 6.5, propertyTaxRate: 2.0, insuranceRate: 0.8, vacancyRate: 7, maintenanceRate: 0.9, managementFee: 7 },
+      { name: "Dallas", state: "TX", medianHomePrice: 420000, annualAppreciation: 5.0, rentalYield: 6.0, propertyTaxRate: 1.9, insuranceRate: 0.55, vacancyRate: 6, maintenanceRate: 0.85, managementFee: 8 },
+      { name: "San Antonio", state: "TX", medianHomePrice: 290000, annualAppreciation: 4.8, rentalYield: 6.8, propertyTaxRate: 1.85, insuranceRate: 0.45, vacancyRate: 6.5, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "Fort Worth", state: "TX", medianHomePrice: 380000, annualAppreciation: 5.2, rentalYield: 6.2, propertyTaxRate: 1.88, insuranceRate: 0.52, vacancyRate: 6, maintenanceRate: 0.8, managementFee: 7 },
+      { name: "El Paso", state: "TX", medianHomePrice: 235000, annualAppreciation: 4.2, rentalYield: 7.0, propertyTaxRate: 2.1, insuranceRate: 0.4, vacancyRate: 7, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Arlington", state: "TX", medianHomePrice: 350000, annualAppreciation: 5.0, rentalYield: 6.3, propertyTaxRate: 1.92, insuranceRate: 0.5, vacancyRate: 6, maintenanceRate: 0.78, managementFee: 7 },
+      { name: "Plano", state: "TX", medianHomePrice: 520000, annualAppreciation: 4.8, rentalYield: 5.2, propertyTaxRate: 1.75, insuranceRate: 0.48, vacancyRate: 5, maintenanceRate: 0.82, managementFee: 8 },
+      { name: "Corpus Christi", state: "TX", medianHomePrice: 260000, annualAppreciation: 4.0, rentalYield: 7.2, propertyTaxRate: 1.95, insuranceRate: 0.85, vacancyRate: 7.5, maintenanceRate: 0.8, managementFee: 7 },
+      { name: "Lubbock", state: "TX", medianHomePrice: 220000, annualAppreciation: 4.5, rentalYield: 7.5, propertyTaxRate: 2.0, insuranceRate: 0.42, vacancyRate: 7, maintenanceRate: 0.72, managementFee: 6 },
     ]
   },
   {
     name: "Florida",
     abbreviation: "FL",
     cities: [
-      { name: "Miami", medianHomePrice: 580000, annualAppreciation: 5.5, rentalYield: 5.8, propertyTaxRate: 0.89, insuranceRate: 1.2, vacancyRate: 7, maintenanceRate: 1.0, managementFee: 10 },
-      { name: "Orlando", medianHomePrice: 395000, annualAppreciation: 5.8, rentalYield: 6.2, propertyTaxRate: 0.97, insuranceRate: 0.9, vacancyRate: 6, maintenanceRate: 0.85, managementFee: 8 },
-      { name: "Tampa", medianHomePrice: 410000, annualAppreciation: 6.2, rentalYield: 6.0, propertyTaxRate: 0.91, insuranceRate: 0.95, vacancyRate: 5.5, maintenanceRate: 0.8, managementFee: 8 },
-      { name: "Jacksonville", medianHomePrice: 340000, annualAppreciation: 5.5, rentalYield: 6.5, propertyTaxRate: 0.88, insuranceRate: 0.75, vacancyRate: 6, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "Miami", state: "FL", medianHomePrice: 580000, annualAppreciation: 5.5, rentalYield: 5.8, propertyTaxRate: 0.89, insuranceRate: 1.2, vacancyRate: 7, maintenanceRate: 1.0, managementFee: 10 },
+      { name: "Orlando", state: "FL", medianHomePrice: 395000, annualAppreciation: 5.8, rentalYield: 6.2, propertyTaxRate: 0.97, insuranceRate: 0.9, vacancyRate: 6, maintenanceRate: 0.85, managementFee: 8 },
+      { name: "Tampa", state: "FL", medianHomePrice: 410000, annualAppreciation: 6.2, rentalYield: 6.0, propertyTaxRate: 0.91, insuranceRate: 0.95, vacancyRate: 5.5, maintenanceRate: 0.8, managementFee: 8 },
+      { name: "Jacksonville", state: "FL", medianHomePrice: 340000, annualAppreciation: 5.5, rentalYield: 6.5, propertyTaxRate: 0.88, insuranceRate: 0.75, vacancyRate: 6, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "Fort Lauderdale", state: "FL", medianHomePrice: 520000, annualAppreciation: 5.2, rentalYield: 5.5, propertyTaxRate: 0.92, insuranceRate: 1.1, vacancyRate: 6.5, maintenanceRate: 0.9, managementFee: 9 },
+      { name: "St. Petersburg", state: "FL", medianHomePrice: 380000, annualAppreciation: 6.0, rentalYield: 6.2, propertyTaxRate: 0.9, insuranceRate: 0.92, vacancyRate: 5.5, maintenanceRate: 0.78, managementFee: 8 },
+      { name: "Sarasota", state: "FL", medianHomePrice: 480000, annualAppreciation: 5.8, rentalYield: 5.5, propertyTaxRate: 0.85, insuranceRate: 1.0, vacancyRate: 7, maintenanceRate: 0.85, managementFee: 9 },
+      { name: "Cape Coral", state: "FL", medianHomePrice: 420000, annualAppreciation: 6.5, rentalYield: 5.8, propertyTaxRate: 0.82, insuranceRate: 1.15, vacancyRate: 8, maintenanceRate: 0.88, managementFee: 8 },
+      { name: "Tallahassee", state: "FL", medianHomePrice: 280000, annualAppreciation: 4.5, rentalYield: 7.0, propertyTaxRate: 0.95, insuranceRate: 0.7, vacancyRate: 6, maintenanceRate: 0.72, managementFee: 7 },
+      { name: "Gainesville", state: "FL", medianHomePrice: 310000, annualAppreciation: 4.8, rentalYield: 6.8, propertyTaxRate: 0.93, insuranceRate: 0.72, vacancyRate: 5.5, maintenanceRate: 0.7, managementFee: 7 },
     ]
   },
   {
     name: "New York",
     abbreviation: "NY",
     cities: [
-      { name: "New York City", medianHomePrice: 750000, annualAppreciation: 3.0, rentalYield: 4.0, propertyTaxRate: 0.88, insuranceRate: 0.4, vacancyRate: 4, maintenanceRate: 1.5, managementFee: 10 },
-      { name: "Buffalo", medianHomePrice: 240000, annualAppreciation: 5.0, rentalYield: 7.5, propertyTaxRate: 2.4, insuranceRate: 0.35, vacancyRate: 6, maintenanceRate: 1.0, managementFee: 7 },
-      { name: "Rochester", medianHomePrice: 210000, annualAppreciation: 4.5, rentalYield: 8.0, propertyTaxRate: 2.6, insuranceRate: 0.32, vacancyRate: 6.5, maintenanceRate: 1.0, managementFee: 7 },
-      { name: "Albany", medianHomePrice: 280000, annualAppreciation: 4.0, rentalYield: 7.0, propertyTaxRate: 2.2, insuranceRate: 0.3, vacancyRate: 5.5, maintenanceRate: 0.9, managementFee: 7 },
+      { name: "New York City", state: "NY", medianHomePrice: 750000, annualAppreciation: 3.0, rentalYield: 4.0, propertyTaxRate: 0.88, insuranceRate: 0.4, vacancyRate: 4, maintenanceRate: 1.5, managementFee: 10 },
+      { name: "Buffalo", state: "NY", medianHomePrice: 240000, annualAppreciation: 5.0, rentalYield: 7.5, propertyTaxRate: 2.4, insuranceRate: 0.35, vacancyRate: 6, maintenanceRate: 1.0, managementFee: 7 },
+      { name: "Rochester", state: "NY", medianHomePrice: 210000, annualAppreciation: 4.5, rentalYield: 8.0, propertyTaxRate: 2.6, insuranceRate: 0.32, vacancyRate: 6.5, maintenanceRate: 1.0, managementFee: 7 },
+      { name: "Albany", state: "NY", medianHomePrice: 280000, annualAppreciation: 4.0, rentalYield: 7.0, propertyTaxRate: 2.2, insuranceRate: 0.3, vacancyRate: 5.5, maintenanceRate: 0.9, managementFee: 7 },
+      { name: "Syracuse", state: "NY", medianHomePrice: 195000, annualAppreciation: 4.2, rentalYield: 8.2, propertyTaxRate: 2.5, insuranceRate: 0.33, vacancyRate: 6.5, maintenanceRate: 0.95, managementFee: 7 },
+      { name: "Yonkers", state: "NY", medianHomePrice: 580000, annualAppreciation: 3.5, rentalYield: 4.5, propertyTaxRate: 1.8, insuranceRate: 0.38, vacancyRate: 4.5, maintenanceRate: 1.2, managementFee: 9 },
+      { name: "White Plains", state: "NY", medianHomePrice: 650000, annualAppreciation: 3.2, rentalYield: 4.2, propertyTaxRate: 2.0, insuranceRate: 0.4, vacancyRate: 4, maintenanceRate: 1.1, managementFee: 9 },
+      { name: "Ithaca", state: "NY", medianHomePrice: 320000, annualAppreciation: 4.0, rentalYield: 6.5, propertyTaxRate: 2.3, insuranceRate: 0.3, vacancyRate: 5, maintenanceRate: 0.85, managementFee: 8 },
+      { name: "Binghamton", state: "NY", medianHomePrice: 145000, annualAppreciation: 3.8, rentalYield: 9.0, propertyTaxRate: 2.7, insuranceRate: 0.28, vacancyRate: 7, maintenanceRate: 1.0, managementFee: 7 },
+      { name: "Schenectady", state: "NY", medianHomePrice: 190000, annualAppreciation: 4.0, rentalYield: 7.8, propertyTaxRate: 2.4, insuranceRate: 0.32, vacancyRate: 6, maintenanceRate: 0.92, managementFee: 7 },
     ]
   },
   {
     name: "Arizona",
     abbreviation: "AZ",
     cities: [
-      { name: "Phoenix", medianHomePrice: 450000, annualAppreciation: 5.5, rentalYield: 5.8, propertyTaxRate: 0.62, insuranceRate: 0.28, vacancyRate: 5.5, maintenanceRate: 0.7, managementFee: 8 },
-      { name: "Tucson", medianHomePrice: 320000, annualAppreciation: 5.0, rentalYield: 6.5, propertyTaxRate: 0.68, insuranceRate: 0.25, vacancyRate: 6, maintenanceRate: 0.65, managementFee: 7 },
-      { name: "Scottsdale", medianHomePrice: 750000, annualAppreciation: 4.5, rentalYield: 4.5, propertyTaxRate: 0.55, insuranceRate: 0.3, vacancyRate: 5, maintenanceRate: 0.8, managementFee: 9 },
-      { name: "Mesa", medianHomePrice: 420000, annualAppreciation: 5.3, rentalYield: 5.5, propertyTaxRate: 0.6, insuranceRate: 0.26, vacancyRate: 5.5, maintenanceRate: 0.68, managementFee: 7 },
+      { name: "Phoenix", state: "AZ", medianHomePrice: 450000, annualAppreciation: 5.5, rentalYield: 5.8, propertyTaxRate: 0.62, insuranceRate: 0.28, vacancyRate: 5.5, maintenanceRate: 0.7, managementFee: 8 },
+      { name: "Tucson", state: "AZ", medianHomePrice: 320000, annualAppreciation: 5.0, rentalYield: 6.5, propertyTaxRate: 0.68, insuranceRate: 0.25, vacancyRate: 6, maintenanceRate: 0.65, managementFee: 7 },
+      { name: "Scottsdale", state: "AZ", medianHomePrice: 750000, annualAppreciation: 4.5, rentalYield: 4.5, propertyTaxRate: 0.55, insuranceRate: 0.3, vacancyRate: 5, maintenanceRate: 0.8, managementFee: 9 },
+      { name: "Mesa", state: "AZ", medianHomePrice: 420000, annualAppreciation: 5.3, rentalYield: 5.5, propertyTaxRate: 0.6, insuranceRate: 0.26, vacancyRate: 5.5, maintenanceRate: 0.68, managementFee: 7 },
+      { name: "Chandler", state: "AZ", medianHomePrice: 480000, annualAppreciation: 5.5, rentalYield: 5.2, propertyTaxRate: 0.58, insuranceRate: 0.27, vacancyRate: 5, maintenanceRate: 0.7, managementFee: 8 },
+      { name: "Gilbert", state: "AZ", medianHomePrice: 520000, annualAppreciation: 5.8, rentalYield: 5.0, propertyTaxRate: 0.56, insuranceRate: 0.26, vacancyRate: 4.5, maintenanceRate: 0.68, managementFee: 8 },
+      { name: "Glendale", state: "AZ", medianHomePrice: 380000, annualAppreciation: 5.2, rentalYield: 5.8, propertyTaxRate: 0.64, insuranceRate: 0.28, vacancyRate: 5.5, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Tempe", state: "AZ", medianHomePrice: 440000, annualAppreciation: 5.0, rentalYield: 5.5, propertyTaxRate: 0.6, insuranceRate: 0.27, vacancyRate: 5, maintenanceRate: 0.72, managementFee: 8 },
+      { name: "Peoria", state: "AZ", medianHomePrice: 410000, annualAppreciation: 5.4, rentalYield: 5.6, propertyTaxRate: 0.58, insuranceRate: 0.26, vacancyRate: 5.5, maintenanceRate: 0.68, managementFee: 7 },
+      { name: "Surprise", state: "AZ", medianHomePrice: 395000, annualAppreciation: 5.6, rentalYield: 5.8, propertyTaxRate: 0.57, insuranceRate: 0.25, vacancyRate: 5.5, maintenanceRate: 0.66, managementFee: 7 },
     ]
   },
   {
     name: "Colorado",
     abbreviation: "CO",
     cities: [
-      { name: "Denver", medianHomePrice: 595000, annualAppreciation: 4.8, rentalYield: 4.8, propertyTaxRate: 0.55, insuranceRate: 0.32, vacancyRate: 5, maintenanceRate: 0.85, managementFee: 8 },
-      { name: "Colorado Springs", medianHomePrice: 450000, annualAppreciation: 5.2, rentalYield: 5.5, propertyTaxRate: 0.52, insuranceRate: 0.28, vacancyRate: 5.5, maintenanceRate: 0.8, managementFee: 7 },
-      { name: "Boulder", medianHomePrice: 850000, annualAppreciation: 4.0, rentalYield: 4.0, propertyTaxRate: 0.58, insuranceRate: 0.35, vacancyRate: 4, maintenanceRate: 0.9, managementFee: 9 },
-      { name: "Fort Collins", medianHomePrice: 520000, annualAppreciation: 4.5, rentalYield: 5.0, propertyTaxRate: 0.54, insuranceRate: 0.3, vacancyRate: 4.5, maintenanceRate: 0.78, managementFee: 7 },
+      { name: "Denver", state: "CO", medianHomePrice: 595000, annualAppreciation: 4.8, rentalYield: 4.8, propertyTaxRate: 0.55, insuranceRate: 0.32, vacancyRate: 5, maintenanceRate: 0.85, managementFee: 8 },
+      { name: "Colorado Springs", state: "CO", medianHomePrice: 450000, annualAppreciation: 5.2, rentalYield: 5.5, propertyTaxRate: 0.52, insuranceRate: 0.28, vacancyRate: 5.5, maintenanceRate: 0.8, managementFee: 7 },
+      { name: "Boulder", state: "CO", medianHomePrice: 850000, annualAppreciation: 4.0, rentalYield: 4.0, propertyTaxRate: 0.58, insuranceRate: 0.35, vacancyRate: 4, maintenanceRate: 0.9, managementFee: 9 },
+      { name: "Fort Collins", state: "CO", medianHomePrice: 520000, annualAppreciation: 4.5, rentalYield: 5.0, propertyTaxRate: 0.54, insuranceRate: 0.3, vacancyRate: 4.5, maintenanceRate: 0.78, managementFee: 7 },
+      { name: "Aurora", state: "CO", medianHomePrice: 480000, annualAppreciation: 5.0, rentalYield: 5.2, propertyTaxRate: 0.56, insuranceRate: 0.3, vacancyRate: 5, maintenanceRate: 0.82, managementFee: 7 },
+      { name: "Lakewood", state: "CO", medianHomePrice: 540000, annualAppreciation: 4.6, rentalYield: 4.8, propertyTaxRate: 0.54, insuranceRate: 0.31, vacancyRate: 4.5, maintenanceRate: 0.8, managementFee: 8 },
+      { name: "Thornton", state: "CO", medianHomePrice: 510000, annualAppreciation: 4.8, rentalYield: 5.0, propertyTaxRate: 0.55, insuranceRate: 0.29, vacancyRate: 5, maintenanceRate: 0.78, managementFee: 7 },
+      { name: "Arvada", state: "CO", medianHomePrice: 560000, annualAppreciation: 4.5, rentalYield: 4.8, propertyTaxRate: 0.53, insuranceRate: 0.3, vacancyRate: 4.5, maintenanceRate: 0.8, managementFee: 8 },
+      { name: "Westminster", state: "CO", medianHomePrice: 525000, annualAppreciation: 4.7, rentalYield: 5.0, propertyTaxRate: 0.54, insuranceRate: 0.29, vacancyRate: 5, maintenanceRate: 0.78, managementFee: 7 },
+      { name: "Pueblo", state: "CO", medianHomePrice: 280000, annualAppreciation: 5.5, rentalYield: 6.5, propertyTaxRate: 0.58, insuranceRate: 0.26, vacancyRate: 6, maintenanceRate: 0.75, managementFee: 7 },
     ]
   },
   {
     name: "Georgia",
     abbreviation: "GA",
     cities: [
-      { name: "Atlanta", medianHomePrice: 400000, annualAppreciation: 5.5, rentalYield: 6.0, propertyTaxRate: 0.92, insuranceRate: 0.38, vacancyRate: 6, maintenanceRate: 0.8, managementFee: 8 },
-      { name: "Savannah", medianHomePrice: 350000, annualAppreciation: 5.0, rentalYield: 6.5, propertyTaxRate: 1.0, insuranceRate: 0.55, vacancyRate: 7, maintenanceRate: 0.85, managementFee: 8 },
-      { name: "Augusta", medianHomePrice: 220000, annualAppreciation: 4.5, rentalYield: 7.5, propertyTaxRate: 0.95, insuranceRate: 0.35, vacancyRate: 7, maintenanceRate: 0.75, managementFee: 7 },
-      { name: "Athens", medianHomePrice: 310000, annualAppreciation: 5.2, rentalYield: 6.8, propertyTaxRate: 0.88, insuranceRate: 0.32, vacancyRate: 5.5, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Atlanta", state: "GA", medianHomePrice: 400000, annualAppreciation: 5.5, rentalYield: 6.0, propertyTaxRate: 0.92, insuranceRate: 0.38, vacancyRate: 6, maintenanceRate: 0.8, managementFee: 8 },
+      { name: "Savannah", state: "GA", medianHomePrice: 350000, annualAppreciation: 5.0, rentalYield: 6.5, propertyTaxRate: 1.0, insuranceRate: 0.55, vacancyRate: 7, maintenanceRate: 0.85, managementFee: 8 },
+      { name: "Augusta", state: "GA", medianHomePrice: 220000, annualAppreciation: 4.5, rentalYield: 7.5, propertyTaxRate: 0.95, insuranceRate: 0.35, vacancyRate: 7, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "Athens", state: "GA", medianHomePrice: 310000, annualAppreciation: 5.2, rentalYield: 6.8, propertyTaxRate: 0.88, insuranceRate: 0.32, vacancyRate: 5.5, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Marietta", state: "GA", medianHomePrice: 420000, annualAppreciation: 5.3, rentalYield: 5.8, propertyTaxRate: 0.9, insuranceRate: 0.36, vacancyRate: 5.5, maintenanceRate: 0.78, managementFee: 8 },
+      { name: "Roswell", state: "GA", medianHomePrice: 520000, annualAppreciation: 4.8, rentalYield: 5.2, propertyTaxRate: 0.85, insuranceRate: 0.34, vacancyRate: 5, maintenanceRate: 0.8, managementFee: 8 },
+      { name: "Sandy Springs", state: "GA", medianHomePrice: 580000, annualAppreciation: 4.5, rentalYield: 5.0, propertyTaxRate: 0.88, insuranceRate: 0.35, vacancyRate: 4.5, maintenanceRate: 0.82, managementFee: 9 },
+      { name: "Alpharetta", state: "GA", medianHomePrice: 550000, annualAppreciation: 5.0, rentalYield: 5.2, propertyTaxRate: 0.86, insuranceRate: 0.34, vacancyRate: 5, maintenanceRate: 0.78, managementFee: 8 },
+      { name: "Macon", state: "GA", medianHomePrice: 180000, annualAppreciation: 4.2, rentalYield: 8.0, propertyTaxRate: 1.0, insuranceRate: 0.35, vacancyRate: 8, maintenanceRate: 0.8, managementFee: 7 },
+      { name: "Columbus", state: "GA", medianHomePrice: 210000, annualAppreciation: 4.0, rentalYield: 7.5, propertyTaxRate: 0.98, insuranceRate: 0.36, vacancyRate: 7.5, maintenanceRate: 0.78, managementFee: 7 },
     ]
   },
   {
     name: "North Carolina",
     abbreviation: "NC",
     cities: [
-      { name: "Charlotte", medianHomePrice: 420000, annualAppreciation: 5.8, rentalYield: 5.5, propertyTaxRate: 0.78, insuranceRate: 0.32, vacancyRate: 5.5, maintenanceRate: 0.75, managementFee: 8 },
-      { name: "Raleigh", medianHomePrice: 450000, annualAppreciation: 6.0, rentalYield: 5.2, propertyTaxRate: 0.82, insuranceRate: 0.3, vacancyRate: 5, maintenanceRate: 0.72, managementFee: 8 },
-      { name: "Durham", medianHomePrice: 410000, annualAppreciation: 5.5, rentalYield: 5.5, propertyTaxRate: 0.85, insuranceRate: 0.28, vacancyRate: 5, maintenanceRate: 0.7, managementFee: 7 },
-      { name: "Asheville", medianHomePrice: 480000, annualAppreciation: 4.5, rentalYield: 5.0, propertyTaxRate: 0.62, insuranceRate: 0.35, vacancyRate: 6, maintenanceRate: 0.85, managementFee: 9 },
+      { name: "Charlotte", state: "NC", medianHomePrice: 420000, annualAppreciation: 5.8, rentalYield: 5.5, propertyTaxRate: 0.78, insuranceRate: 0.32, vacancyRate: 5.5, maintenanceRate: 0.75, managementFee: 8 },
+      { name: "Raleigh", state: "NC", medianHomePrice: 450000, annualAppreciation: 6.0, rentalYield: 5.2, propertyTaxRate: 0.82, insuranceRate: 0.3, vacancyRate: 5, maintenanceRate: 0.72, managementFee: 8 },
+      { name: "Durham", state: "NC", medianHomePrice: 410000, annualAppreciation: 5.5, rentalYield: 5.5, propertyTaxRate: 0.85, insuranceRate: 0.28, vacancyRate: 5, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Asheville", state: "NC", medianHomePrice: 480000, annualAppreciation: 4.5, rentalYield: 5.0, propertyTaxRate: 0.62, insuranceRate: 0.35, vacancyRate: 6, maintenanceRate: 0.85, managementFee: 9 },
+      { name: "Greensboro", state: "NC", medianHomePrice: 280000, annualAppreciation: 5.2, rentalYield: 6.5, propertyTaxRate: 0.85, insuranceRate: 0.28, vacancyRate: 6, maintenanceRate: 0.72, managementFee: 7 },
+      { name: "Winston-Salem", state: "NC", medianHomePrice: 265000, annualAppreciation: 5.0, rentalYield: 6.8, propertyTaxRate: 0.88, insuranceRate: 0.27, vacancyRate: 6, maintenanceRate: 0.7, managementFee: 7 },
+      { name: "Cary", state: "NC", medianHomePrice: 520000, annualAppreciation: 5.5, rentalYield: 4.8, propertyTaxRate: 0.8, insuranceRate: 0.29, vacancyRate: 4.5, maintenanceRate: 0.7, managementFee: 8 },
+      { name: "Wilmington", state: "NC", medianHomePrice: 380000, annualAppreciation: 5.5, rentalYield: 5.8, propertyTaxRate: 0.72, insuranceRate: 0.45, vacancyRate: 7, maintenanceRate: 0.82, managementFee: 8 },
+      { name: "Fayetteville", state: "NC", medianHomePrice: 225000, annualAppreciation: 4.8, rentalYield: 7.2, propertyTaxRate: 0.9, insuranceRate: 0.3, vacancyRate: 7, maintenanceRate: 0.75, managementFee: 7 },
+      { name: "High Point", state: "NC", medianHomePrice: 240000, annualAppreciation: 5.0, rentalYield: 7.0, propertyTaxRate: 0.86, insuranceRate: 0.28, vacancyRate: 6.5, maintenanceRate: 0.72, managementFee: 7 },
     ]
   },
 ];
+
+// Helper to get all cities flattened
+export const getAllCities = (): CityData[] => {
+  return statesData.flatMap(state => state.cities);
+};
 
 export const calculateInvestmentProjection = (
   investmentAmount: number,

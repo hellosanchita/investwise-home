@@ -3,6 +3,7 @@ import { Building2, TrendingUp, Shield, LineChart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import InvestmentForm from "@/components/InvestmentForm";
 import AnalysisResults from "@/components/AnalysisResults";
+import MedianPricesTicker from "@/components/MedianPricesTicker";
 import { calculateInvestmentProjection, CityData } from "@/data/propertyData";
 
 const Index = () => {
@@ -92,6 +93,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Median Prices Ticker */}
+      <MedianPricesTicker />
 
       {/* Main Content */}
       <main className="py-12">
