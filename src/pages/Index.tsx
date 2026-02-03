@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Building2, TrendingUp, Shield, LineChart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import InvestmentForm from "@/components/InvestmentForm";
@@ -11,6 +11,12 @@ import { calculateInvestmentProjection, CityData } from "@/data/propertyData";
 const Index = () => {
   const [analysisData, setAnalysisData] = useState<ReturnType<typeof calculateInvestmentProjection> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [loanAmount, setLoanAmount] = useState<number>(400000);
+
+  const handleFormChange = useCallback((propertyPrice: number, investment: number) => {
+    const calculatedLoan = Math.max(0, propertyPrice - investment);
+    setLoanAmount(calculatedLoan);
+  }, []);
 
   const handleAnalyze = async (investment: number, propertyPrice: number, city: CityData) => {
     setIsLoading(true);
@@ -118,12 +124,12 @@ const Index = () => {
                       <p className="text-sm text-muted-foreground mb-6">
                         Enter your investment details to see projected returns
                       </p>
-                      <InvestmentForm onAnalyze={handleAnalyze} isLoading={isLoading} />
+                      <InvestmentForm onAnalyze={handleAnalyze} isLoading={isLoading} onFormChange={handleFormChange} />
                     </CardContent>
                   </Card>
                   
                   {/* Mortgage Calculator */}
-                  <MortgageCalculator />
+                  <MortgageCalculator loanAmount={loanAmount} />
                 </div>
               </div>
 

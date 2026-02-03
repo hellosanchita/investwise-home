@@ -5,22 +5,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 
-const MortgageCalculator = () => {
-  const [loanAmount, setLoanAmount] = useState<string>("400,000");
+interface MortgageCalculatorProps {
+  loanAmount: number;
+}
+
+const MortgageCalculator = ({ loanAmount }: MortgageCalculatorProps) => {
   const [interestRate, setInterestRate] = useState<number>(6.5);
   const [loanTerm, setLoanTerm] = useState<number>(30);
 
-  const formatNumber = (value: string) => {
-    const num = value.replace(/[^0-9]/g, "");
-    return num ? parseInt(num).toLocaleString() : "";
-  };
-
-  const parseNumber = (value: string) => {
-    return parseInt(value.replace(/,/g, "")) || 0;
+  const formatNumber = (value: number) => {
+    return value.toLocaleString();
   };
 
   const calculations = useMemo(() => {
-    const principal = parseNumber(loanAmount);
+    const principal = loanAmount;
     const monthlyRate = interestRate / 100 / 12;
     const numPayments = loanTerm * 12;
 
@@ -60,23 +58,19 @@ const MortgageCalculator = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Loan Amount */}
+        {/* Loan Amount (calculated) */}
         <div className="space-y-2">
-          <Label htmlFor="mortgageLoan" className="text-sm font-medium flex items-center gap-2">
+          <Label className="text-sm font-medium flex items-center gap-2">
             <DollarSign className="w-4 h-4 text-accent" />
             Loan Amount
           </Label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">
-              $
-            </span>
-            <Input
-              id="mortgageLoan"
-              type="text"
-              value={loanAmount}
-              onChange={(e) => setLoanAmount(formatNumber(e.target.value))}
-              className="pl-8 h-11 bg-background border-border"
-            />
+          <div className="bg-muted/50 rounded-lg p-3 text-center">
+            <p className="text-lg font-semibold text-foreground">
+              ${formatNumber(loanAmount)}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Property Price − Investment
+            </p>
           </div>
         </div>
 
