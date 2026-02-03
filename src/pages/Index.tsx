@@ -4,17 +4,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import InvestmentForm from "@/components/InvestmentForm";
 import AnalysisResults from "@/components/AnalysisResults";
 import MedianPricesTicker from "@/components/MedianPricesTicker";
+import StateTaxChart from "@/components/StateTaxChart";
+import MortgageCalculator from "@/components/MortgageCalculator";
 import { calculateInvestmentProjection, CityData } from "@/data/propertyData";
 
 const Index = () => {
   const [analysisData, setAnalysisData] = useState<ReturnType<typeof calculateInvestmentProjection> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAnalyze = async (investment: number, city: CityData) => {
+  const handleAnalyze = async (investment: number, propertyPrice: number, city: CityData) => {
     setIsLoading(true);
     // Simulate API call delay for better UX
     await new Promise((resolve) => setTimeout(resolve, 800));
-    const data = calculateInvestmentProjection(investment, city);
+    const data = calculateInvestmentProjection(investment, propertyPrice, city);
     setAnalysisData(data);
     setIsLoading(false);
   };
@@ -94,6 +96,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* State Tax Comparison */}
+      <StateTaxChart />
+
       {/* Median Prices Ticker */}
       <MedianPricesTicker />
 
@@ -104,7 +109,7 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Form Section */}
               <div className="lg:col-span-4">
-                <div className="lg:sticky lg:top-8">
+                <div className="lg:sticky lg:top-8 space-y-6">
                   <Card className="card-gradient shadow-card">
                     <CardContent className="p-6">
                       <h2 className="text-xl font-display font-bold text-foreground mb-2">
@@ -116,6 +121,9 @@ const Index = () => {
                       <InvestmentForm onAnalyze={handleAnalyze} isLoading={isLoading} />
                     </CardContent>
                   </Card>
+                  
+                  {/* Mortgage Calculator */}
+                  <MortgageCalculator />
                 </div>
               </div>
 

@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { DollarSign, MapPin, Building } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { DollarSign, MapPin, Building, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,15 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { statesData, StateData, CityData } from "@/data/propertyData";
+import { statesData, CityData } from "@/data/propertyData";
 
 interface InvestmentFormProps {
-  onAnalyze: (investment: number, city: CityData) => void;
+  onAnalyze: (investment: number, propertyPrice: number, city: CityData) => void;
   isLoading: boolean;
 }
 
 const InvestmentForm = ({ onAnalyze, isLoading }: InvestmentFormProps) => {
-  const [investment, setInvestment] = useState<string>("100000");
+  const [investment, setInvestment] = useState<string>("100,000");
+  const [propertyPrice, setPropertyPrice] = useState<string>("500,000");
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
 
@@ -26,6 +27,17 @@ const InvestmentForm = ({ onAnalyze, isLoading }: InvestmentFormProps) => {
     const state = statesData.find((s) => s.abbreviation === selectedState);
     return state?.cities || [];
   }, [selectedState]);
+
+  const selectedCityData = useMemo(() => {
+    return cities.find((c) => c.name === selectedCity);
+  }, [cities, selectedCity]);
+
+  // Auto-populate property price when city is selected
+  useEffect(() => {
+    if (selectedCityData) {
+      setPropertyPrice(selectedCityData.medianHomePrice.toLocaleString());
+    }
+  }, [selectedCityData]);
 
   const handleStateChange = (value: string) => {
     setSelectedState(value);
@@ -35,20 +47,47 @@ const InvestmentForm = ({ onAnalyze, isLoading }: InvestmentFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const cityData = cities.find((c) => c.name === selectedCity);
-    if (cityData && investment) {
-      onAnalyze(parseInt(investment.replace(/,/g, "")), cityData);
+    if (cityData && investment && propertyPrice) {
+      onAnalyze(
+        parseInt(investment.replace(/,/g, "")),
+        parseInt(propertyPrice.replace(/,/g, "")),
+        cityData
+      );
     }
   };
 
-  const formatInvestment = (value: string) => {
+  const formatCurrency = (value: string) => {
     const num = value.replace(/[^0-9]/g, "");
     return num ? parseInt(num).toLocaleString() : "";
   };
 
-  const isValid = investment && selectedState && selectedCity;
+  const isValid = investment && propertyPrice && selectedState && selectedCity;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-2">
+        <Label htmlFor="propertyPrice" className="text-sm font-medium text-foreground flex items-center gap-2">
+          <Home className="w-4 h-4 text-accent" />
+          Target Property Price
+        </Label>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">
+            $
+          </span>
+          <Input
+            id="propertyPrice"
+            type="text"
+            value={propertyPrice}
+            onChange={(e) => setPropertyPrice(formatCurrency(e.target.value))}
+            placeholder="500,000"
+            className="pl-8 h-12 text-lg font-medium bg-background border-border focus:border-accent focus:ring-accent/20"
+          />
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Estimated purchase price of the property
+        </p>
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="investment" className="text-sm font-medium text-foreground flex items-center gap-2">
           <DollarSign className="w-4 h-4 text-accent" />
@@ -62,13 +101,13 @@ const InvestmentForm = ({ onAnalyze, isLoading }: InvestmentFormProps) => {
             id="investment"
             type="text"
             value={investment}
-            onChange={(e) => setInvestment(formatInvestment(e.target.value))}
+            onChange={(e) => setInvestment(formatCurrency(e.target.value))}
             placeholder="100,000"
             className="pl-8 h-12 text-lg font-medium bg-background border-border focus:border-accent focus:ring-accent/20"
           />
         </div>
         <p className="text-xs text-muted-foreground">
-          This covers your down payment (20%) and closing costs
+          Your total cash investment (down payment + closing costs)
         </p>
       </div>
 
