@@ -155,19 +155,20 @@ export const getAllCities = (): CityData[] => {
 
 export const calculateInvestmentProjection = (
   investmentAmount: number,
+  propertyPrice: number,
   cityData: CityData,
   years: number = 10
 ) => {
-  const downPaymentPercent = 20;
   const mortgageRate = 6.5;
   const mortgageTerm = 30;
   const closingCostPercent = 3;
 
-  // Calculate property value based on investment (assuming investment covers down payment + closing costs)
-  const effectiveDownPayment = investmentAmount / (1 + closingCostPercent / 100 * (100 / downPaymentPercent));
-  const propertyValue = effectiveDownPayment / (downPaymentPercent / 100);
-  const loanAmount = propertyValue * (1 - downPaymentPercent / 100);
+  // Use the provided property price directly
+  const propertyValue = propertyPrice;
   const closingCosts = propertyValue * (closingCostPercent / 100);
+  const downPayment = investmentAmount - closingCosts;
+  const downPaymentPercent = (downPayment / propertyValue) * 100;
+  const loanAmount = propertyValue - downPayment;
 
   // Monthly mortgage payment calculation
   const monthlyRate = mortgageRate / 100 / 12;
