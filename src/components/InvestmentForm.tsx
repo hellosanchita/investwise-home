@@ -15,9 +15,10 @@ import { statesData, CityData } from "@/data/propertyData";
 interface InvestmentFormProps {
   onAnalyze: (investment: number, propertyPrice: number, city: CityData) => void;
   isLoading: boolean;
+  onFormChange?: (propertyPrice: number, investment: number) => void;
 }
 
-const InvestmentForm = ({ onAnalyze, isLoading }: InvestmentFormProps) => {
+const InvestmentForm = ({ onAnalyze, isLoading, onFormChange }: InvestmentFormProps) => {
   const [investment, setInvestment] = useState<string>("100,000");
   const [propertyPrice, setPropertyPrice] = useState<string>("500,000");
   const [selectedState, setSelectedState] = useState<string>("");
@@ -38,6 +39,13 @@ const InvestmentForm = ({ onAnalyze, isLoading }: InvestmentFormProps) => {
       setPropertyPrice(selectedCityData.medianHomePrice.toLocaleString());
     }
   }, [selectedCityData]);
+
+  // Notify parent of form changes for loan calculation
+  useEffect(() => {
+    const price = parseInt(propertyPrice.replace(/,/g, "")) || 0;
+    const inv = parseInt(investment.replace(/,/g, "")) || 0;
+    onFormChange?.(price, inv);
+  }, [propertyPrice, investment, onFormChange]);
 
   const handleStateChange = (value: string) => {
     setSelectedState(value);
