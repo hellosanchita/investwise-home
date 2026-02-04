@@ -6,6 +6,7 @@ import AnalysisResults from "@/components/AnalysisResults";
 import MedianPricesTicker from "@/components/MedianPricesTicker";
 import StateTaxChart from "@/components/StateTaxChart";
 import MortgageCalculator from "@/components/MortgageCalculator";
+import FloatingCompareButton from "@/components/FloatingCompareButton";
 import { calculateInvestmentProjection, CityData } from "@/data/propertyData";
 
 const Index = () => {
@@ -155,6 +156,9 @@ const Index = () => {
           </div>
         </div>
       </main>
+
+      {/* Floating Compare Button */}
+      <FloatingCompareButton />
 
       {/* Footer */}
       <footer className="py-8 border-t border-border">
