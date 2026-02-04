@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import ComparisonReport from "@/components/ComparisonReport";
+import { generateMockPropertyData, generateComparisonInsights, PropertyData, ComparisonInsight } from "@/utils/mockPropertyData";
 
 const CompareHomes = () => {
   const { toast } = useToast();
@@ -13,6 +15,9 @@ const CompareHomes = () => {
   const [name, setName] = useState("");
   const [propertyLinks, setPropertyLinks] = useState<string[]>([""]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [reportGenerated, setReportGenerated] = useState(false);
+  const [propertyData, setPropertyData] = useState<PropertyData[]>([]);
+  const [insights, setInsights] = useState<ComparisonInsight[]>([]);
 
   const validLinks = propertyLinks.filter((link) => link.trim() !== "");
   const isFormValid = email.trim() !== "" && name.trim() !== "" && validLinks.length >= 1;
@@ -50,17 +55,29 @@ const CompareHomes = () => {
 
     setIsProcessing(true);
     
-    // Mock PayPal payment flow
+    // Simulate payment processing
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
+    // Generate mock property data from the links
+    const mockData = generateMockPropertyData(validLinks);
+    const comparisonInsights = generateComparisonInsights(mockData);
+    
+    setPropertyData(mockData);
+    setInsights(comparisonInsights);
+    setReportGenerated(true);
+    
     toast({
-      title: "Payment Successful!",
-      description: `Your comparison report for ${validLinks.length} properties will be sent to ${email} within 2-24 hours.`,
+      title: "Report Generated!",
+      description: `Your comparison report for ${validLinks.length} properties is ready. You can view and download it below.`,
     });
     
     setIsProcessing(false);
-    
-    // Reset form
+  };
+
+  const handleNewReport = () => {
+    setReportGenerated(false);
+    setPropertyData([]);
+    setInsights([]);
     setEmail("");
     setName("");
     setPropertyLinks([""]);
@@ -89,6 +106,19 @@ const CompareHomes = () => {
 
       <main className="py-12">
         <div className="container mx-auto px-4">
+          {reportGenerated ? (
+            <div className="max-w-5xl mx-auto space-y-6">
+              <Button variant="outline" onClick={handleNewReport} className="mb-4">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Generate New Report
+              </Button>
+              <ComparisonReport
+                properties={propertyData}
+                insights={insights}
+                customerName={name}
+              />
+            </div>
+          ) : (
           <div className="max-w-3xl mx-auto space-y-8">
             {/* Service Info Card */}
             <Card className="card-gradient shadow-card border-accent/20">
@@ -307,6 +337,7 @@ const CompareHomes = () => {
               </CardContent>
             </Card>
           </div>
+          )}
         </div>
       </main>
     </div>
