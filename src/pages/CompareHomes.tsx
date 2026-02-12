@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import ComparisonReport from "@/components/ComparisonReport";
-import { generateMockPropertyData, generateComparisonInsights, PropertyData, ComparisonInsight } from "@/utils/mockPropertyData";
+import { PropertyChatInterface, PropertySuggestion } from "@/components/PropertyChatInterface";
+import { generateComparisonInsights, PropertyData, ComparisonInsight } from "@/utils/mockPropertyData";
 
 const CompareHomes = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [chatStarted, setChatStarted] = useState(false);
+  const [chatProperties, setChatProperties] = useState<PropertySuggestion[]>([]);
   const [propertyLinks, setPropertyLinks] = useState<string[]>([""]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
@@ -20,7 +23,8 @@ const CompareHomes = () => {
   const [insights, setInsights] = useState<ComparisonInsight[]>([]);
 
   const validLinks = propertyLinks.filter((link) => link.trim() !== "");
-  const isFormValid = email.trim() !== "" && name.trim() !== "" && validLinks.length >= 1;
+  // Use chat properties if available, otherwise validate manual links
+  const isFormValid = email.trim() !== "" && name.trim() !== "" && (chatProperties.length > 0 || validLinks.length >= 1);
 
   const addPropertyLink = () => {
     if (propertyLinks.length < 6) {
@@ -41,7 +45,7 @@ const CompareHomes = () => {
   };
 
   const isValidPropertyLink = (url: string) => {
-    if (!url.trim()) return true; // Empty is valid (not required for all 6)
+    if (!url.trim()) return true;
     const lowerUrl = url.toLowerCase();
     return (
       lowerUrl.includes("zillow.com") ||
@@ -50,25 +54,50 @@ const CompareHomes = () => {
     );
   };
 
+  const handlePropertiesFromChat = (properties: PropertySuggestion[]) => {
+    setChatProperties(properties);
+    setChatStarted(true);
+  };
+
   const handlePayment = async () => {
     if (!isFormValid) return;
 
     setIsProcessing(true);
     
-    // Simulate payment processing
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
-    // Generate mock property data from the links
-    const mockData = generateMockPropertyData(validLinks);
-    const comparisonInsights = generateComparisonInsights(mockData);
+    // Use chat properties if available, otherwise use manual links
+    const propertiesToUse = chatProperties.length > 0 
+      ? chatProperties 
+      : propertyLinks.filter(l => l.trim() !== "").map((url, idx) => ({
+          id: `manual-${idx}`,
+          url,
+          address: `Property ${idx + 1}`,
+          price: 500000,
+          bedrooms: 3,
+          bathrooms: 2,
+          sqft: 1800,
+          lotSize: 5000,
+          pricePerSqft: 278,
+          yearBuilt: 2015,
+          propertyType: "Single Family",
+          hoaFees: 0,
+          monthlyTax: 500,
+          monthlyInsurance: 167,
+          estimatedRent: 3500,
+          daysOnMarket: 30,
+          source: "zillow" as const,
+        }));
+
+    const comparisonInsights = generateComparisonInsights(propertiesToUse as PropertyData[]);
     
-    setPropertyData(mockData);
+    setPropertyData(propertiesToUse as PropertyData[]);
     setInsights(comparisonInsights);
     setReportGenerated(true);
     
     toast({
       title: "Report Generated!",
-      description: `Your comparison report for ${validLinks.length} properties is ready. You can view and download it below.`,
+      description: `Your comparison report for ${propertiesToUse.length} properties is ready. You can view and download it below.`,
     });
     
     setIsProcessing(false);
@@ -81,6 +110,8 @@ const CompareHomes = () => {
     setEmail("");
     setName("");
     setPropertyLinks([""]);
+    setChatStarted(false);
+    setChatProperties([]);
   };
 
   return (
@@ -118,225 +149,188 @@ const CompareHomes = () => {
                 customerName={name}
               />
             </div>
+          ) : !chatStarted ? (
+            // Chat interface
+            <div className="max-w-3xl mx-auto space-y-8">
+              <Card className="card-gradient shadow-card">
+                <CardHeader>
+                  <CardTitle>Find Your Properties</CardTitle>
+                  <CardDescription>
+                    Answer a few questions to get personalized property recommendations
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <PropertyChatInterface
+                    onPropertiesSelected={handlePropertiesFromChat}
+                    userEmail={email}
+                    userName={name}
+                  />
+                </CardContent>
+              </Card>
+            </div>
           ) : (
-          <div className="max-w-3xl mx-auto space-y-8">
-            {/* Service Info Card */}
-            <Card className="card-gradient shadow-card border-accent/20">
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <CreditCard className="w-5 h-5 text-accent" />
+            // Comparison form after chat
+            <div className="max-w-3xl mx-auto space-y-8">
+              {/* Service Info Card */}
+              <Card className="card-gradient shadow-card border-accent/20">
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                        <CreditCard className="w-5 h-5 text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">Paid Service</h3>
+                        <p className="text-sm text-muted-foreground">
+                          $5.00 per comparison report
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">Paid Service</h3>
-                      <p className="text-sm text-muted-foreground">
-                        $5.00 per comparison report
-                      </p>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-5 h-5 text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">Email Delivery</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Report sent to your email
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-5 h-5 text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">2-24 Hours</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Delivery after payment
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">Email Delivery</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Report sent to your email
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">2-24 Hours</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Delivery after payment
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Report Contents Info */}
-            <Card className="card-gradient shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <FileText className="w-5 h-5 text-accent" />
-                  What's Included in the Report
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                  {[
-                    "Bedrooms & Bathrooms",
-                    "Built-up Area (sq ft)",
-                    "Lot Size",
-                    "Listed Price",
-                    "Price per Sq Ft",
-                    "HOA Fees",
-                    "Monthly Costs",
-                    "Rent Expectation",
-                    "Year Built",
-                    "Property Type",
-                    "Days on Market",
-                    "Investment Score",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center gap-2 text-muted-foreground"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Form Card */}
-            <Card className="card-gradient shadow-card">
-              <CardHeader>
-                <CardTitle>Your Information</CardTitle>
-                <CardDescription>
-                  We'll send the comparison report to your email address
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Name & Email */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Selected Properties */}
+              <Card className="card-gradient shadow-card">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <FileText className="w-5 h-5 text-accent" />
+                    Your Selected Properties ({chatProperties.length})
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      Full Name *
-                    </Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="flex items-center gap-2">
-                      <Mail className="w-4 h-4" />
-                      Email Address *
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                {/* Property Links */}
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Label className="flex items-center gap-2">
-                      <Link2 className="w-4 h-4" />
-                      Property Links (1-6) *
-                    </Label>
-                    <span className="text-sm text-muted-foreground">
-                      {validLinks.length} of 6 properties
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground -mt-2">
-                    Paste links from Zillow, Realtor.com, or Redfin
-                  </p>
-
-                  <div className="space-y-3">
-                    {propertyLinks.map((link, index) => (
-                      <div key={index} className="flex gap-2">
-                        <div className="flex-1">
-                          <Input
-                            placeholder={`Property ${index + 1} URL (e.g., https://zillow.com/...)`}
-                            value={link}
-                            onChange={(e) => updatePropertyLink(index, e.target.value)}
-                            className={
-                              link && !isValidPropertyLink(link)
-                                ? "border-destructive focus-visible:ring-destructive"
-                                : ""
-                            }
-                          />
-                          {link && !isValidPropertyLink(link) && (
-                            <p className="text-xs text-destructive mt-1">
-                              Please use a Zillow, Realtor.com, or Redfin link
-                            </p>
-                          )}
+                    {chatProperties.map((prop) => (
+                      <div
+                        key={prop.id}
+                        className="flex items-start justify-between p-3 bg-muted/30 rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium text-foreground">
+                            {prop.address}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            ${prop.price.toLocaleString()} •{" "}
+                            {prop.bedrooms} bed • {prop.sqft.toLocaleString()} sqft
+                          </p>
                         </div>
-                        {propertyLinks.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => removePropertyLink(index)}
-                            className="flex-shrink-0"
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )}
                       </div>
                     ))}
                   </div>
+                </CardContent>
+              </Card>
 
-                  {propertyLinks.length < 6 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={addPropertyLink}
-                      className="w-full"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Another Property
-                    </Button>
-                  )}
-                </div>
-
-                {/* Payment Section */}
-                <div className="pt-4 border-t border-border">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="font-semibold text-foreground">Total</p>
-                      <p className="text-sm text-muted-foreground">
-                        Comparison report for {validLinks.length || 0} {validLinks.length === 1 ? "property" : "properties"}
-                      </p>
+              {/* Form Card */}
+              <Card className="card-gradient shadow-card">
+                <CardHeader>
+                  <CardTitle>Your Information</CardTitle>
+                  <CardDescription>
+                    We'll send the comparison report to your email address
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Name & Email */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        Full Name *
+                      </Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="John Doe"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
                     </div>
-                    <p className="text-2xl font-bold text-foreground">$5.00</p>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="flex items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        Email Address *
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="john@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
                   </div>
 
-                  <Button
-                    onClick={handlePayment}
-                    disabled={!isFormValid || isProcessing}
-                    className="w-full h-12 text-base gold-gradient text-foreground hover:opacity-90 transition-opacity shadow-gold"
-                  >
-                    {isProcessing ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-foreground/30 border-t-foreground rounded-full animate-spin mr-2" />
-                        Processing Payment...
-                      </>
-                    ) : (
-                      <>
-                        <CreditCard className="w-5 h-5 mr-2" />
-                        Pay with PayPal - Generate Report
-                      </>
-                    )}
-                  </Button>
+                  {/* Payment Section */}
+                  <div className="pt-4 border-t border-border">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className="font-semibold text-foreground">Total</p>
+                        <p className="text-sm text-muted-foreground">
+                          Comparison report for {chatProperties.length} {chatProperties.length === 1 ? "property" : "properties"}
+                        </p>
+                      </div>
+                      <p className="text-2xl font-bold text-foreground">$5.00</p>
+                    </div>
 
-                  <p className="text-xs text-center text-muted-foreground mt-3">
-                    By proceeding, you agree to receive the comparison report via email.
-                    Report will be delivered within 2-24 hours after payment confirmation.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    <Button
+                      onClick={handlePayment}
+                      disabled={!isFormValid || isProcessing}
+                      className="w-full h-12 text-base gold-gradient text-foreground hover:opacity-90 transition-opacity shadow-gold"
+                    >
+                      {isProcessing ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-foreground/30 border-t-foreground rounded-full animate-spin mr-2" />
+                          Processing Payment...
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="w-5 h-5 mr-2" />
+                          Pay with PayPal - Generate Report
+                        </>
+                      )}
+                    </Button>
+
+                    <p className="text-xs text-center text-muted-foreground mt-3">
+                      By proceeding, you agree to receive the comparison report via email.
+                      Report will be delivered within 2-24 hours after payment confirmation.
+                    </p>
+                  </div>
+
+                  {/* Back to Chat */}
+                  <div className="pt-4 border-t border-border">
+                    <Button
+                      variant="outline"
+                      onClick={() => setChatStarted(false)}
+                      className="w-full"
+                    >
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      Back to Recommendations
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
         </div>
       </main>
