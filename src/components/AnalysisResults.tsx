@@ -1,5 +1,6 @@
-import { TrendingUp, Home, Wallet, PiggyBank, AlertTriangle } from "lucide-react";
+import { TrendingUp, Home, Wallet, PiggyBank, AlertTriangle, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ProjectionChart from "./ProjectionChart";
 import CostBreakdown from "./CostBreakdown";
 
@@ -160,15 +161,32 @@ const AnalysisResults = ({ data }: AnalysisResultsProps) => {
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
+              <TooltipProvider delayDuration={200}>
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">Year</th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">Property Value</th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">Annual Rent</th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">Expenses</th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">Net Income</th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">Equity</th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">ROI</th>
+                  {[
+                    { label: "Year", align: "text-left", tip: "The projection year, starting from year 1 after purchase." },
+                    { label: "Property Value", align: "text-right", tip: "Estimated market value based on the city's annual appreciation rate compounded each year." },
+                    { label: "Annual Rent", align: "text-right", tip: "Projected gross rental income for that year, based on the city's rental yield applied to the current property value." },
+                    { label: "Expenses", align: "text-right", tip: "Total annual costs including mortgage payments, property tax, insurance, maintenance, and property management fees." },
+                    { label: "Net Income", align: "text-right", tip: "Annual Rent minus Expenses. A positive value means the property generates cash flow; negative means you pay out of pocket." },
+                    { label: "Equity", align: "text-right", tip: "Your ownership stake: current property value minus remaining loan balance. Grows through appreciation and mortgage paydown." },
+                    { label: "ROI", align: "text-right", tip: "Return on Investment: total profit (equity gain + cumulative net income) divided by your initial cash investment, expressed as a percentage." },
+                  ].map((col) => (
+                    <th key={col.label} className={`px-4 py-3 ${col.align} font-semibold text-muted-foreground`}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="inline-flex items-center gap-1 cursor-help">
+                            {col.label}
+                            <Info className="w-3.5 h-3.5 text-muted-foreground/60" />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-[250px] text-xs">
+                          {col.tip}
+                        </TooltipContent>
+                      </Tooltip>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -191,6 +209,7 @@ const AnalysisResults = ({ data }: AnalysisResultsProps) => {
                   </tr>
                 ))}
               </tbody>
+              </TooltipProvider>
             </table>
           </div>
         </CardContent>
